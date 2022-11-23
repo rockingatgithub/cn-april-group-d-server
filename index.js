@@ -3,6 +3,7 @@ const PORT = 8000;
 
 const app = express()
 
+// app.use((req, res, next) => { console.log('URL', req.url); next() })
 app.use(express.json())
 app.use(express.urlencoded())
 
@@ -52,6 +53,20 @@ app.put('/updateStudent/:roll', (req, res) => {
         students.splice(index, 1, req.body)
     }else {
         students.push(req.body)
+    }
+
+    return res.status(200).json({
+        data: students
+    })
+})
+
+app.delete('/deleteStudent', (req, res) => {
+    console.log(req.query.roll)
+    const roll = parseInt(req.query.roll)
+
+    const  index = students.findIndex((student) => student.roll === roll)
+    if(index !== -1){
+        students.splice(index, 1)
     }
 
     return res.status(200).json({
